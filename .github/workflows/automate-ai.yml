@@ -1,0 +1,27 @@
+name: AutoMate AI Workflow
+
+on:
+  workflow_call:  # Enables this workflow to be reused in other repositories
+
+jobs:
+  run_automate_ai:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install OpenAI
+        run: |
+          pip install -r requirements.txt
+
+      - name: Test AutoMate AI
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          echo "Hello from AutoMate AI!"
