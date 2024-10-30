@@ -1,7 +1,7 @@
 name: AutoMate AI Workflow
 
 on:
-  workflow_dispatch:  # This enables the manual "Run workflow" button
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -15,10 +15,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3  # Updated to v3
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4  # Updated to v4
         with:
           python-version: '3.x'
 
