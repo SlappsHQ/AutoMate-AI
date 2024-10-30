@@ -1,7 +1,13 @@
 name: AutoMate AI Workflow
 
 on:
-  workflow_call:  # Enables this workflow to be reused in other repositories
+  workflow_dispatch:  # This enables the manual "Run workflow" button
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   run_automate_ai:
