@@ -1,14 +1,14 @@
 name: AutoMate AI Workflow
 
 on:
-  workflow_call:  # This line enables the workflow to be called by other workflows
-  workflow_dispatch:
+  workflow_call:  # Enables the workflow to be called by other workflows
+  workflow_dispatch:  # Allows you to manually trigger the workflow
   push:
     branches:
-      - main
+      - main  # Triggers on push to the main branch
   pull_request:
     branches:
-      - main
+      - main  # Triggers on PR to the main branch
 
 jobs:
   run_automate_ai:
@@ -16,19 +16,19 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3  # Checks out the code from the repo
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v4  # Sets up Python environment
         with:
           python-version: '3.x'
 
-      - name: Install OpenAI
+      - name: Install dependencies
         run: |
           pip install -r requirements.txt
 
-      - name: Test AutoMate AI
+      - name: Run Code Checker
         env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}  # Uses the secret API key
         run: |
-          echo "Hello from AutoMate AI!"
+          python AutoMate/scripts/code_checker.py
