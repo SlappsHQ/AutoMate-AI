@@ -1,21 +1,21 @@
-import os
 import openai
+import os
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
+# Set up OpenAI API key
+openai.api_key = os.getenv("OPENAI_API_KEY")  # Ensure this environment variable is set
 
-def analyze_code(code):
-    response = openai.Completion.create(
+def get_completion(prompt):
+    response = openai.ChatCompletion.create(
         model="gpt-4",
-        prompt=f"Analyze this code:\n\n{code}",
-        max_tokens=100
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": prompt}
+        ]
     )
-    return response.choices[0].text.strip()
+    return response['choices'][0]['message']['content']
 
-# Example code analysis
-code_snippet = """
-def example():
-    print("Hello, World!")
-"""
-
-feedback = analyze_code(code_snippet)
-print("AI Feedback:\n", feedback)
+if __name__ == "__main__":
+    # Example usage
+    prompt = "Hello!"
+    completion = get_completion(prompt)
+    print("Response from OpenAI:", completion)
