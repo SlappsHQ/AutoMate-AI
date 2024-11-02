@@ -23,13 +23,19 @@ result = subprocess.run(
 commit_data = result.stdout.strip()
 
 # Step 5: Pass commit data to OpenAI for analysis
-completion = client.completions.create(
-    model="gpt-4-turbo",
+# Make a chat completion request
+completion = client.chat.completions.create(
+    model="gpt-4",  # Update to your specific model if needed
     messages=[
-        {"role": "system", "content": "You are a code review assistant."},
-        {"role": "user", "content": f"Please review the following code changes:\n{commit_data}"}
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "Hello!"}
     ]
 )
 
-# Output the response
-print(completion.choices[0].message["content"])
+# Access and print the assistant's message content
+print(completion.choices[0].message.content)
+
+# # Output the response
+# print(completion.choices[0].message["content"])
+
+
