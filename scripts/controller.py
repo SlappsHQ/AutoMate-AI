@@ -1,7 +1,6 @@
 # AutoMate/scripts/controller.py
 
-def main():
-    print("Hello")
+import organiser
 
-if __name__ == "__main__":
-    main()
+print("Running Organiser...")
+organiser.run()  # Directly call organiser's function
