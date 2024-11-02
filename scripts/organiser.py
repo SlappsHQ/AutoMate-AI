@@ -1,16 +1,13 @@
-# AutoMate/scripts/organiser.py
-
 import os
 import openai
 from fetch_file_content import fetch_file_content
 
-# OpenAI API key (ensure it's set in the environment)
-openai_api_key = os.getenv("OPENAI_API_KEY")
-client = openai.ChatCompletion(api_key=openai_api_key)
+# Set OpenAI API key
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 def analyze_code_structure(file_content):
     """Analyzes the structure of a file and generates suggestions for organization."""
-    completion = client.create(
+    completion = openai.ChatCompletion.create(
         model="gpt-4",
         messages=[
             {"role": "system", "content": "You are a code organization assistant for SwiftUI projects."},
