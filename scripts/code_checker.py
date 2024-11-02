@@ -1,3 +1,5 @@
+# AutoMate/scripts/code_checker.py
+
 import sys
 import requests
 import openai
