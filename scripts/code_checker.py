@@ -14,32 +14,32 @@ if not commit_id:
     sys.exit(1)
 
 
-print(commit_id)
+print("Commit ID:", commit_id)
 
-# # Step 4: Retrieve only the new code additions using `git show`
-# result = subprocess.run(
-#     ["git", "show", "--pretty=format:", commit_id, "--unified=0"],
-#     capture_output=True,
-#     text=True,
-# )
-# commit_data = result.stdout.strip()
+# Step 4: Retrieve only the new code additions using `git show`
+result = subprocess.run(
+    ["git", "show", "--pretty=format:", commit_id, "--unified=0"],
+    capture_output=True,
+    text=True,
+)
+commit_data = result.stdout.strip()
 
-# # Truncate commit data for token limit compliance
-# max_tokens = 1000  # Reduced further for testing; adjust as needed
-# commit_data = commit_data[:max_tokens]
+# Truncate commit data for token limit compliance
+max_tokens = 1000  # Reduced further for testing; adjust as needed
+commit_data = commit_data[:max_tokens]
 
-# # Print for verification
-# print("Truncated Commit Data for Analysis:")
-# print(commit_data)
+# Print for verification
+print("Truncated Commit Data for Analysis:")
+print(commit_data)
 
-# # Pass the refined commit data to OpenAI for analysis
-# completion = client.chat.completions.create(
-#     model="gpt-4",
-#     messages=[
-#         {"role": "system", "content": "You are a code review assistant."},
-#         {"role": "user", "content": f"Please review the following code changes:\n{commit_data}"}
-#     ]
-# )
+# Pass the refined commit data to OpenAI for analysis
+completion = client.chat.completions.create(
+    model="gpt-4",
+    messages=[
+        {"role": "system", "content": "You are a code review assistant."},
+        {"role": "user", "content": f"Please review the following code changes:\n{commit_data}"}
+    ]
+)
 
-# # Access and print the assistant's response
-# print(completion.choices[0].message.content)
+# Access and print the assistant's response
+print(completion.choices[0].message.content)
