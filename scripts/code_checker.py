@@ -40,4 +40,4 @@ completion = client.chat.completions.create(
 )
 
 # Access and print the assistant's response
-print(completion.choices[0].message["content"])
+print(completion.choices[0].message.content)
