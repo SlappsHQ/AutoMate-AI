@@ -6,29 +6,27 @@ import subprocess
 # Initialize OpenAI API client
 client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-# Step 1: Retrieve commit ID from the argument
+# Retrieve commit ID from the argument
 commit_id = sys.argv[1] if len(sys.argv) > 1 else None
 if not commit_id:
     print("No commit ID provided.")
     sys.exit(1)
 
-# Step 2: Retrieve only the changed lines for each file in the commit
+# Retrieve only the changed lines in the commit with filenames, limited to the diff portion
 result = subprocess.run(
-    ["git", "show", "--pretty=", "--unified=0", commit_id],  # The `--pretty=` keeps metadata out of output
+    ["git", "diff", "--unified=0", commit_id, "--minimal"],  # Retrieves minimal diff changes only
     capture_output=True,
     text=True,
 )
-commit_data = result.stdout.strip()
 
-# Limit commit data to a reasonable length
-max_tokens = 7500
-commit_data = commit_data[:max_tokens]
+# Limiting to a preview of 50 lines for testing
+commit_data = "\n".join(result.stdout.strip().splitlines()[:50])
 
-# Print for verification
-print("Truncated Commit Data for Analysis:")
+# Display truncated commit data for verification
+print("Truncated Commit Data for Analysis (50 lines):")
 print(commit_data)
 
-# Step 3: Send commit data to OpenAI for analysis
+# Pass the refined commit data to OpenAI for analysis
 completion = client.chat.completions.create(
     model="gpt-4",
     messages=[
@@ -37,5 +35,5 @@ completion = client.chat.completions.create(
     ]
 )
 
-# Print the assistant's response
+# Access and print the assistant's response
 print(completion.choices[0].message.content)
