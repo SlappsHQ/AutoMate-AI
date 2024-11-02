@@ -1,21 +1,24 @@
-# organizer.py
-
-import os
+import requests
 import openai
-from fetch_github_file import fetch_file_content
+import os
+from fetch_file_content import fetch_file_content  # Corrected import
 
-# GitHub repository and file details
+# GitHub repository details
 owner = "SlappsHQ"
 repo = "Agent"
-file_path = "Agent/roadmap.md"  # Example file path to analyze
+file_path = "Agent/Views/ChatView.swift"  # Set your specific file path within the repo
+branch = "main"
 
-# Initialize OpenAI API client
+# Access tokens
 openai_api_key = os.getenv("OPENAI_API_KEY")
-client = openai.OpenAI(api_key=openai_api_key)
+github_token = os.getenv("AUTOMATE_GITHUB_TOKEN")
+
+# Set OpenAI API key
+openai.api_key = openai_api_key
 
 def analyze_code_structure(file_content):
     """Analyzes the structure of a file and generates suggestions for organization."""
-    completion = client.chat_completions.create(
+    completion = openai.ChatCompletion.create(
         model="gpt-4",
         messages=[
             {"role": "system", "content": "You are a code organization assistant for SwiftUI projects."},
@@ -24,14 +27,12 @@ def analyze_code_structure(file_content):
     )
     return completion.choices[0].message.content
 
-# Fetch the file content
-file_content = fetch_file_content(owner, repo, file_path, github_token=os.getenv("AUTOMATE_GITHUB_TOKEN"))
-
-# Analyze the content if successfully fetched
+# Fetch the content of the file to check for structure
+file_content = fetch_file_content(owner, repo, file_path, branch, github_token)
 if file_content:
     print("Analyzing code structure...")
     suggestion = analyze_code_structure(file_content)
-    print("Organizer's suggestion:")
+    print("Organiser's suggestion:")
     print(suggestion)
 else:
-    print("File content could not be retrieved for analysis.")
+    print("No file content available for analysis.")

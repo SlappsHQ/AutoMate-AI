@@ -1,7 +1,4 @@
-# fetch_github_file.py
-
 import requests
-import base64
 import os
 
 def fetch_file_content(owner, repo, file_path, branch="main", github_token=None):
@@ -16,7 +13,7 @@ def fetch_file_content(owner, repo, file_path, branch="main", github_token=None)
         github_token (str): GitHub token for authentication.
 
     Returns:
-        str: Decoded file content if successful, otherwise None.
+        str: File content if successful, otherwise None.
     """
     url = f"https://api.github.com/repos/{owner}/{repo}/contents/{file_path}?ref={branch}"
     headers = {
@@ -26,8 +23,8 @@ def fetch_file_content(owner, repo, file_path, branch="main", github_token=None)
     
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
-        file_data = response.json()
-        return base64.b64decode(file_data["content"]).decode("utf-8")
+        return response.text  # Directly return the raw text content
     else:
-        print(f"Failed to fetch file content: {response.status_code}, {response.text}")
+        print(f"Failed to fetch file content: Status Code {response.status_code}")
+        print("Response text:", response.text)  # Print raw response for debugging
         return None
