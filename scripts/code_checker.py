@@ -20,8 +20,9 @@ print("Commit ID:", commit_id)
 # GitHub API URL for the specific commit
 url = f"https://api.github.com/repos/{owner}/{repo}/commits/{commit_id}"
 headers = {
-    "Authorization": f"Bearer {os.getenv('GITHUB_TOKEN')}"  # Make sure GITHUB_TOKEN is set as an environment variable
+    "Authorization": f"Bearer {os.getenv('MY_GITHUB_TOKEN')}"  # Use the new token variable
 }
+
 
 # Step 4: Retrieve only the new code additions using the GitHub API
 response = requests.get(url, headers=headers)
