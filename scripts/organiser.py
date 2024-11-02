@@ -14,7 +14,7 @@ def analyze_code_structure(file_content):
             {"role": "user", "content": f"Analyze the structure of this code and suggest if any large views or components should be moved to separate files:\n{file_content}"}
         ]
     )
-    return completion.choices[0].message["content"]
+    return completion.choices[0].message.content
 
 def run(owner, repo, branch, file_path):
     """Fetches file content and performs code structure analysis."""
