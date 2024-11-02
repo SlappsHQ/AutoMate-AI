@@ -8,12 +8,6 @@ from fetch_file_content import fetch_file_content
 openai_api_key = os.getenv("OPENAI_API_KEY")
 client = openai.ChatCompletion(api_key=openai_api_key)
 
-# Configuration for the GitHub repository
-owner = "SlappsHQ"
-repo = "Agent"
-branch = "main"
-file_path = "path/to/your/file"  # Set this to the file path you want to analyze
-
 def analyze_code_structure(file_content):
     """Analyzes the structure of a file and generates suggestions for organization."""
     completion = client.create(
@@ -25,7 +19,7 @@ def analyze_code_structure(file_content):
     )
     return completion.choices[0].message.content
 
-def run():
+def run(owner, repo, branch, file_path):
     """Fetches file content and performs code structure analysis."""
     github_token = os.getenv("AUTOMATE_GITHUB_TOKEN")
     file_content = fetch_file_content(owner, repo, file_path, branch, github_token)
