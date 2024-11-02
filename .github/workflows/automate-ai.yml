@@ -31,4 +31,4 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}  # Uses the secret API key
         run: |
-          python AutoMate/scripts/code_checker.py
+          python code_checker.py
