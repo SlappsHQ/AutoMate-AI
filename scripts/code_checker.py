@@ -14,7 +14,7 @@ client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 # Fetch commit details using GitHub API
 url = f"https://api.github.com/repos/{owner}/{repo}/commits/{commit_id}"
 headers = {
-    "Authorization": f"Bearer {os.getenv('MY_GITHUB_TOKEN')}"
+    "Authorization": f"Bearer {os.getenv('AUTOMATE_GITHUB_TOKEN')}"
 }
 response = requests.get(url, headers=headers)
 
