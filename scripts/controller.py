@@ -1,4 +1,7 @@
+# Agent/AutoMate/scripts/controller.py
+
 import os
+import sys
 from organiser import run
 
 # Print diagnostic information
@@ -6,12 +9,16 @@ print("Current directory:", os.getcwd())
 print("Files in current directory:", os.listdir())
 print("Files in scripts directory:", os.listdir(os.path.dirname(__file__)))
 
-# Set up parameters for the `run` function
-commit_id = os.getenv("GITHUB_SHA")  # Example dynamic value, or pass this as an argument if available
-owner = "SlappsHQ"
-repo = "Agent"
-branch = "main"
-file_path = "Agent/roadmap.md"  # Example path for testing; update as needed
+# Get parameters dynamically from command-line arguments
+if len(sys.argv) < 5:
+    print("Usage: controller.py <commit_id> <owner> <repo> <branch> <file_path>")
+    sys.exit(1)
 
-# Call the run function with the dynamic parameters
+commit_id = sys.argv[1]
+owner = sys.argv[2]
+repo = sys.argv[3]
+branch = sys.argv[4]
+file_path = sys.argv[5]
+
+# Call the run function with the parameters passed from run_automate.py
 run(owner, repo, branch, file_path)
