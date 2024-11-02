@@ -1,18 +1,18 @@
 import openai
 import os
 
-# Set up OpenAI API key
-openai.api_key = os.getenv("OPENAI_API_KEY")  # Ensure this environment variable is set
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 def get_completion(prompt):
-    response = openai.ChatCompletion.create(
+    response = openai.Completion.create(
         model="gpt-4",
-        messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": prompt}
-        ]
+        prompt=prompt,
+        max_tokens=100,
+        n=1,
+        stop=None,
+        temperature=0.5,
     )
-    return response['choices'][0]['message']['content']
+    return response.choices[0].text.strip()
 
 if __name__ == "__main__":
     # Example usage
