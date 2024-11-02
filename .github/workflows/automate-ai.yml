@@ -1,14 +1,13 @@
 name: AutoMate AI Workflow
 
 on:
-  workflow_call:  # Enables the workflow to be called by other workflows
-  workflow_dispatch:  # Allows you to manually trigger the workflow
+  workflow_call:  # Enables external repos to call this workflow
   push:
     branches:
-      - main  # Triggers on push to the main branch
+      - main
   pull_request:
     branches:
-      - main  # Triggers on PR to the main branch
+      - main
 
 jobs:
   run_automate_ai:
@@ -16,10 +15,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3  # Checks out the code from the repo
+        uses: actions/checkout@v3
 
       - name: Set up Python
-        uses: actions/setup-python@v4  # Sets up Python environment
+        uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
@@ -29,6 +28,6 @@ jobs:
 
       - name: Run Code Checker
         env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}  # Uses the secret API key
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}  # Secret stays in AutoMate
         run: |
           python scripts/code_checker.py
