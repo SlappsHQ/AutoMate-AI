@@ -7,14 +7,14 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 def analyze_code_structure(file_content):
     """Analyzes the structure of a file and generates suggestions for organization."""
-    completion = openai.ChatCompletion.create(
+    completion = openai.Completion.create(
         model="gpt-4",
         messages=[
             {"role": "system", "content": "You are a code organization assistant for SwiftUI projects."},
             {"role": "user", "content": f"Analyze the structure of this code and suggest if any large views or components should be moved to separate files:\n{file_content}"}
         ]
     )
-    return completion.choices[0].message.content
+    return completion.choices[0].message["content"]
 
 def run(owner, repo, branch, file_path):
     """Fetches file content and performs code structure analysis."""
