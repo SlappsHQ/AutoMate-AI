@@ -3,7 +3,6 @@ import openai
 import os
 import subprocess
 
-
 # Initialize OpenAI API client
 client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
@@ -13,12 +12,11 @@ if not commit_id:
     print("No commit ID provided.")
     sys.exit(1)
 
-
 print("Commit ID:", commit_id)
 
 # Step 4: Retrieve only the new code additions using `git show`
 result = subprocess.run(
-    ["git", "show", "--pretty=format:", commit_id, "--unified=0"],
+    ["git", "show", commit_id, "--pretty=format:", "--unified=0"],
     capture_output=True,
     text=True,
 )
