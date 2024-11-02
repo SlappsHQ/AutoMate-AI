@@ -1,12 +1,7 @@
 name: AutoMate AI Workflow
 
 on:
-  workflow_call:
-    inputs:
-      GITHUB_SHA:
-        required: true
-        type: string
-  workflow_dispatch:
+  workflow_call:  # Enables external repos to call this workflow
   push:
     branches:
       - main
@@ -14,29 +9,26 @@ on:
     branches:
       - main
 
-env:
-  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-  MY_GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
-
 jobs:
   run_automate_ai:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout AutoMate repository
-        uses: actions/checkout@v3
-        with:
-          submodules: recursive
-
+      - name: Checkout AutoMate code
+        uses: actions/checkout@v3  # Ensure AutoMate’s code is checked out
+      
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: |
-          pip install -r requirements.txt
+          pip install -r requirements.txt  # Path should now resolve correctly
 
-      - name: Run AutoMate Code Checker
+      - name: Run Code Checker
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
-          python scripts/code_checker.py "${{ inputs.GITHUB_SHA }}"  # Use the passed SHA
+          python scripts/code_checker.py
+
