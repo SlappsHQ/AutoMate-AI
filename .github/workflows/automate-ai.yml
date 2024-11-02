@@ -14,9 +14,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
+      - name: Checkout AutoMate code
+        uses: actions/checkout@v3  # Ensure AutoMate’s code is checked out
+      
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -24,10 +24,11 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt
+          pip install -r requirements.txt  # Path should now resolve correctly
 
       - name: Run Code Checker
         env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}  # Secret stays in AutoMate
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           python scripts/code_checker.py
+
