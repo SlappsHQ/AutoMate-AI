@@ -31,7 +31,7 @@ print("Truncated Commit Data for Analysis:")
 print(commit_data)
 
 # Step 5: Pass the refined commit data to OpenAI for analysis
-completion = client.completions.create(
+completion = client.chat.completions.create(
     model="gpt-4",
     messages=[
         {"role": "system", "content": "You are a code review assistant."},
