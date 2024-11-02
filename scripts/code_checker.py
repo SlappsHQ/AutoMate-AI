@@ -8,13 +8,21 @@ owner = "SlappsHQ"
 repo = "Agent"
 commit_id = sys.argv[1]  # The commit SHA passed as an argument
 
+openai_api_key = os.getenv("OPENAI_API_KEY")
+
+automate_github_token = os.getenv("AUTOMATE_GITHUB_TOKEN")
+
+print(f"OpenAI API Key: {openai_api_key}")
+print(f"Automate GitHub Token: {automate_github_token}")
+
 # Initialize OpenAI API client
-client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+client = openai.OpenAI(api_key=openai_api_key)
+
 
 # Fetch commit details using GitHub API
 url = f"https://api.github.com/repos/{owner}/{repo}/commits/{commit_id}"
 headers = {
-    "Authorization": f"Bearer {os.getenv('AUTOMATE_GITHUB_TOKEN')}"
+    "Authorization": f"Bearer {automate_github_token}"
 }
 response = requests.get(url, headers=headers)
 
