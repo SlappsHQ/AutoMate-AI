@@ -40,7 +40,7 @@ if response.status_code == 200:
     print(patch_data)
 
     # Send patch data to OpenAI
-    completion = client.chat_completions.create(
+    completion = client.chat.completions.create(
         model="gpt-4",
         messages=[
             {"role": "system", "content": "You are a code review assistant."},
