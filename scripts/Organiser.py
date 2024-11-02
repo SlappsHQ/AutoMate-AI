@@ -1,34 +1,17 @@
-import os
-import sys
-import requests
-import openai
+# organizer.py
 
-# GitHub repository and commit details
+import os
+import openai
+from fetch_github_file import fetch_file_content
+
+# GitHub repository and file details
 owner = "SlappsHQ"
 repo = "Agent"
-commit_id = '478fd202b1dcdac7ec93078d9df3068f2e519145'  # The commit SHA passed as an argument
-file_path = sys.argv[2] if len(sys.argv) > 2 else None
-
-# Access tokens
-openai_api_key = os.getenv("OPENAI_API_KEY")
-github_token = os.getenv("AUTOMATE_GITHUB_TOKEN")
+file_path = "Agent/roadmap.md"  # Example file path to analyze
 
 # Initialize OpenAI API client
+openai_api_key = os.getenv("OPENAI_API_KEY")
 client = openai.OpenAI(api_key=openai_api_key)
-
-def fetch_file_content(file_path):
-    """Fetches the content of a specific file from GitHub."""
-    url = f"https://api.github.com/repos/{owner}/{repo}/contents/{file_path}"
-    headers = {
-        "Authorization": f"Bearer {github_token}",
-        "Accept": "application/vnd.github.v3.raw"
-    }
-    response = requests.get(url, headers=headers)
-    if response.status_code == 200:
-        return response.text
-    else:
-        print(f"Failed to fetch file content: {response.status_code}, {response.text}")
-        return None
 
 def analyze_code_structure(file_content):
     """Analyzes the structure of a file and generates suggestions for organization."""
@@ -41,13 +24,14 @@ def analyze_code_structure(file_content):
     )
     return completion.choices[0].message.content
 
-# Fetch the content of the file to check for structure
-if file_path:
-    file_content = fetch_file_content(file_path)
-    if file_content:
-        print("Analyzing code structure...")
-        suggestion = analyze_code_structure(file_content)
-        print("Organiser's suggestion:")
-        print(suggestion)
+# Fetch the file content
+file_content = fetch_file_content(owner, repo, file_path, github_token=os.getenv("AUTOMATE_GITHUB_TOKEN"))
+
+# Analyze the content if successfully fetched
+if file_content:
+    print("Analyzing code structure...")
+    suggestion = analyze_code_structure(file_content)
+    print("Organizer's suggestion:")
+    print(suggestion)
 else:
-    print("No file path provided for analysis.")
+    print("File content could not be retrieved for analysis.")
