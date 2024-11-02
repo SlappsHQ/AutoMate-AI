@@ -14,7 +14,7 @@ if not commit_id:
     print("No commit ID provided.")
     sys.exit(1)
 
-# Step 4: Retrieve commit details using the commit ID
+# Step 4: Retrieve and truncate commit details
 result = subprocess.run(
     ["git", "show", "--pretty=format:%B", commit_id],
     capture_output=True,
@@ -22,12 +22,20 @@ result = subprocess.run(
 )
 commit_data = result.stdout.strip()
 
-# Step 5: Pass commit data to OpenAI for analysis
-completion = client.chat.completions.create(
+# Truncate to the first 300 lines
+max_lines = 300
+truncated_commit_data = "\n".join(commit_data.splitlines()[:max_lines])
+
+# Print the truncated data for verification
+print("Truncated Commit Data (First 300 Lines):")
+print(truncated_commit_data)  # This outputs the first 300 lines to verify content
+
+# Step 5: Pass truncated commit data to OpenAI for analysis
+completion = client.chat_completions.create(
     model="gpt-4",
     messages=[
         {"role": "system", "content": "You are a code review assistant."},
-        {"role": "user", "content": f"Please review the following code changes:\n{commit_data}"}
+        {"role": "user", "content": f"Please review the following code changes:\n{truncated_commit_data}"}
     ]
 )
 
